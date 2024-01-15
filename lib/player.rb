@@ -12,4 +12,8 @@ class Player
 
     @has_lost
   end
+
+  def rank_of_card_at(index)
+    deck.rank_of_cards(index)
+  end
 end
