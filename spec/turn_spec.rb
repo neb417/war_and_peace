@@ -74,4 +74,31 @@ RSpec.describe Turn do
       expect(player2.deck.cards).to match_array [card1, card2, card3, card4, card5, card6, card7]
     end
   end
+
+  context 'instance methods when turn type is mutually_assured_destruction' do
+    let(:card6) { Card.new(:diamond, '8', 8) }
+    let(:deck2) { Deck.new([card4, card3, card6, card7]) }
+    let(:turn) { Turn.new(player1, player2) }
+
+    it { expect(turn.type).to eq :mutually_assured_destruction }
+    it { expect(turn.winner).to eq 'No Winner' }
+
+    it '#pile_cards should add played cards to spoils_of_war' do
+      expect(turn.spoils_of_war).to eq []
+
+      turn.pile_cards
+
+      expect(turn.spoils_of_war).to eq []
+    end
+
+    it '#award_spoils should add spoils_of_war to winning player deck' do
+      winner = turn.winner
+      turn.pile_cards
+      turn.spoils_of_war
+      turn.award_spoils(winner)
+
+      expect(player1.deck.cards).to match_array [card8]
+      expect(player2.deck.cards).to match_array [card7]
+    end
+  end
 end
