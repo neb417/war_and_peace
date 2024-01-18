@@ -20,24 +20,24 @@ class Turn
   end
 
   def winner
-    if basic_play?
+    case type
+    when :basic
       @players.max_by { |player| player.rank_of_card_at(0) }
-    elsif war_play?
+    when :war
       @players.max_by { |player| player.rank_of_card_at(2) }
-    elsif mutually_assured_destruction_play?
+    else
       'No Winner'
     end
   end
 
   def pile_cards
-    if basic_play?
+    case type
+    when :basic
       add_cards_to_spoils(player1, player2)
-    elsif war_play?
+    else
       3.times do
         add_cards_to_spoils(player1, player2)
       end
-    elsif mutually_assured_destruction_play?
-      @players.each { |player| player.deck.cards.shift(3) }
     end
   end
 
